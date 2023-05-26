@@ -6,7 +6,7 @@ namespace webapi.Hubs
 {
     public class AsyncExtractorHub : Hub
     {
-        public ChannelReader<int> Counter(
+        public ChannelReader<int> Extract(
         int count,
         int delay,
         CancellationToken cancellationToken)
