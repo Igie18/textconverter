@@ -1,4 +1,7 @@
+using webapi.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSignalR();
 
 // Add services to the container.
 
@@ -21,5 +24,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<AsyncExtractorHub>("/asyncExtractorHub");
 
 app.Run();
