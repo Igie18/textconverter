@@ -1,41 +1,37 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Runtime.CompilerServices;
 using System.Threading.Channels;
+using System.Text;
 
 namespace webapi.Hubs
 {
     public class AsyncExtractorHub : Hub
     {
-        public ChannelReader<int> Extract(
-        int count,
-        int delay,
+        public ChannelReader<char> Extract(
+        string inputTxt,
         CancellationToken cancellationToken)
         {
-            var channel = Channel.CreateUnbounded<int>();
-
-            // We don't want to await WriteItemsAsync, otherwise we'd end up waiting 
-            // for all the items to be written before returning the channel back to
-            // the client.
-            _ = WriteItemsAsync(channel.Writer, count, delay, cancellationToken);
-
+            var channel = Channel.CreateUnbounded<char>();
+            _ = WriteItemsAsync(channel.Writer, inputTxt, cancellationToken);
             return channel.Reader;
         }
 
         private async Task WriteItemsAsync(
-            ChannelWriter<int> writer,
-            int count,
-            int delay,
+            ChannelWriter<char> writer,
+            string inputTxt,
             CancellationToken cancellationToken)
         {
             Exception localException = null;
             try
             {
-                for (var i = 0; i < count; i++)
-                {
-                    await writer.WriteAsync(i, cancellationToken);
+                Random rnd = new Random();
+                int delay = (rnd.Next(1, 5)) * 1000;
 
-                    // Use the cancellationToken in other APIs that accept cancellation
-                    // tokens so the cancellation can flow down to them.
+                var output = Convert.ToBase64String(Encoding.UTF8.GetBytes(inputTxt));
+
+                foreach (var c in output)
+                {
+                    await writer.WriteAsync(c, cancellationToken);
                     await Task.Delay(delay, cancellationToken);
                 }
             }
