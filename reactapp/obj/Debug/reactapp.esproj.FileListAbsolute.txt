@@ -1,0 +1,2 @@
+E:\Dekstop\Luigi\Projects\Others\CodingExam\RCG\rcg\reactapp\obj\Debug\reactapp.esproj.SuggestedBindingRedirects.cache
+E:\Dekstop\Luigi\Projects\Others\CodingExam\RCG\rcg\reactapp\obj\Debug\reactapp.esproj.CoreCompileInputs.cache
