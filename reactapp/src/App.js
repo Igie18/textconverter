@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as signalR from "@microsoft/signalr"
-import { Button, Container, Row, Col, Form } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Spinner, Stack } from 'react-bootstrap';
 
 const statusFlag = {
     idle: "idle",
@@ -105,38 +105,53 @@ export default function Extractor() {
 
             <Container>
                 <Row className="vh-100 d-flex justify-content-md-center align-items-md-center">
-                    <Col xs="6" className="p-3 rounded-left border border-info">
-                        <Form>
-                            <Form.Group className="mb-3" controlId="extractForm.txtInput">
-                                <Form.Label>Input a text</Form.Label>
-                                <Form.Control rows="3" as="textarea" placeholder="Type any...." required onChange={onTxtInputChange} value={inputTxt} />
-                            </Form.Group>
+                    <Col xs="12">
+                        <Container className="border rounded bg-light">
+                            <Row>
+                                <Col xs="12" className="p-3 border bg-primary text-white">
+                                 Welcome to base64 conversion tool
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs="6" className="p-3">
+                                    <Form>
+                                        <Form.Group className="mb-3" controlId="extractForm.txtInput">
+                                            <Form.Label>Input a text</Form.Label>
+                                            <Form.Control rows="10" as="textarea" placeholder="Type any...." required onChange={onTxtInputChange} value={inputTxt} />
+                                        </Form.Group>
 
-                            {(status == statusFlag.idle || status == statusFlag.canceled) && <div className="d-grid gap-2">
-                                <Button variant="primary" onClick={onStartExtract}>
-                                    Convert!
-                                </Button>
-                            </div>}
-                        </Form>
-                    </Col>
-                    <Col xs="6" className="rounded-right bg-info p-3">
-                        <Form>
-                            <Form.Group className="mb-3" controlId="extractForm.txtResult">
-                                <Form.Label>Result</Form.Label>
-                                <Form.Control rows="3" as="textarea" disabled readOnly value={outputTxt} />
-                            </Form.Group>
+                                        {(status == statusFlag.idle || status == statusFlag.canceled) && <div className="d-grid gap-2">
+                                            <Button variant="primary" onClick={onStartExtract}>
+                                                Convert!
+                                            </Button>
+                                        </div>}
+                                    </Form>
+                                </Col>
+                                <Col xs="6" className="p-3">
+                                    <Form>
+                                        <Form.Group className="mb-3" controlId="extractForm.txtResult">
+                                            <Stack direction="horizontal" gap={5}>
+                                                <Form.Label>Result</Form.Label>
+                                                {status == statusFlag.processing && <Spinner className="ms-auto" variant="secondary" animation="grow" size="sm" />}
+                                            </Stack>
 
-                            <div className="d-grid gap-2">
-                                {status == statusFlag.processing && <Button variant="outline-dark" onClick={onCancelConversion}>
-                                    Cancel
-                                </Button>}
+                                            <Form.Control rows="10" as="textarea" disabled readOnly value={outputTxt} />
+                                        </Form.Group>
 
-                                {(status == statusFlag.completed || status == statusFlag.failed) && <Button variant="outline-dark" onClick={onReset}>
-                                    Convert New
-                                </Button>}
-                            </div>
-                        </Form>
-                    </Col>
+                                        <div className="d-grid gap-2">
+                                            {status == statusFlag.processing && <Button variant="danger" onClick={onCancelConversion}>
+                                                Cancel
+                                            </Button>}
+
+                                            {(status == statusFlag.completed || status == statusFlag.failed) && <Button variant="success" onClick={onReset}>
+                                                Convert New
+                                            </Button>}
+                                        </div>
+                                    </Form>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Col>                    
                 </Row>
             </Container>
         </>
