@@ -6,18 +6,27 @@ If so, please read below instructions per project:
 
 
 reactapp
- -run a terminal inside this folder
- -for first time, please run npm install
- -run npm start
+
+ - run a terminal inside this folder
+ 
+ - for first time, please run npm install
+ 
+ - run npm start
+ 
  
  
  webapi
-  -run a terminal inside this folder
-  -please execute dotnet run. Note: If reactapp is running https please execute dotnet run --launch-profile https (Restart/Refresh the reactapp once done)
+ 
+  - run a terminal inside this folder
   
-  webapitest
-  -run a terminal inside this folder
-  -please execute dotnet test
+  - please execute dotnet run. Note: If reactapp is running https please execute dotnet run --launch-profile https (Restart/Refresh the reactapp once done)
+  
+  
+ webapitest
+  
+  - run a terminal inside this folder
+  
+  - please execute dotnet test
   
   
  Alternatively, you may also run the rcg.sln using vs
