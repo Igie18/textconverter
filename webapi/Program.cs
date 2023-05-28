@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
         builder =>
         {
             //Allow the cors for the react frontend endpoint
-            builder.WithOrigins("https://localhost:3000")
+            builder.WithOrigins("https://localhost:3000", "http://localhost:3000")
                 .AllowAnyHeader()
                 .WithMethods("GET", "POST")
                 .AllowCredentials();

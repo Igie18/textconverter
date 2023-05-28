@@ -52,7 +52,7 @@ export default function Extractor() {
         else if (status === statusFlag.failed) {
             alert.variant = "danger";
             alert.headerMsg = "Failed";
-            alert.headerMsg = "There was a problem processing your text, kindly try again.";
+            alert.bodyMsg = "There was a problem processing your text, kindly try again.";
         }
         else {
             alert = null;
@@ -63,12 +63,33 @@ export default function Extractor() {
 
     function connectToStreamHub()
     {
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl(process.env.REACT_APP_BE_EXTRACTOR_HUB_URI)
-            .configureLogging(signalR.LogLevel.Information)
-        .build();
+        try {
+            let uri = process.env.REACT_APP_BE_EXTRACTOR_HUB_URI;
+            if (window.location.protocol !== 'https:') {
+                uri = process.env.REACT_APP_BE_EXTRACTOR_HUB_URI_HTTP;
+            }
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(uri)
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
 
-        setHubConnection(connection);
+            setHubConnection(connection);
+        }
+        catch {
+            let alert = {
+                variant: "danger",
+                headerMsg: "Connection Failed",
+                bodyMsg: "Kindly try to execute dotnet run --launch-profile https . Thank you"
+            };
+            if (window.location.protocol !== 'https:') {
+                alert = {
+                    variant: "danger",
+                    headerMsg: "Connection Failed",
+                    bodyMsg: "Cannot connect to the server. Kindly try to execute the dotnet run command. Thank you"
+                };
+            }
+            setAlertMsg(alert);
+        }
     };
 
     async function start() {
@@ -79,8 +100,7 @@ export default function Extractor() {
             else { 
                 await hubConnection.start();
             }
-        } catch (err) {
-            console.log(err);
+        } catch {
             setTimeout(start(), 5000);
         }
     };
